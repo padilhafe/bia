@@ -1,0 +1,60 @@
+{
+  "family": "task-def-bia",
+  "executionRoleArn": "arn:aws:iam::689517797857:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::689517797857:role/ecsTaskExecutionRole",
+  "networkMode": "bridge",
+  "requiresCompatibilities": ["EC2"],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "containerDefinitions": [
+    {
+      "name": "bia",
+      "image": "689517797857.dkr.ecr.us-east-1.amazonaws.com/bia:7199c86",
+      "cpu": 1024,
+      "memoryReservation": 410,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 80,
+          "protocol": "tcp",
+          "name": "porta-80",
+          "appProtocol": "http"
+        }
+      ],
+      "environment": [
+        {
+          "name": "DB_HOST",
+          "value": "bia.c4nwo42ke2it.us-east-1.rds.amazonaws.com"
+        },
+        {
+          "name": "DB_PORT",
+          "value": "5432"
+        },
+        {
+          "name": "DB_USER",
+          "value": "postgres"
+        },
+        {
+          "name": "DB_SECRET_NAME",
+          "value": "rds!db-94f04be7-b9c5-498f-8884-eb91d1ff4e52"
+        },
+        {
+          "name": "DB_REGION",
+          "value": "us-east-1"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/task-def-bia",
+          "awslogs-create-group": "true",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
